@@ -12,6 +12,7 @@
         <activity android:name=".FoodWaitList"></activity>
         <activity android:name=".RoleSelection" />
         <activity android:name=".FoodConfirmation" />
+        <activity android:name=".SignUpScreen"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

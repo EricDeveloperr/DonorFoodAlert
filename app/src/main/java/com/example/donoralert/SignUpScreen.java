@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import com.google.firebase.firestore.*;
+import com.google.firebase.*;
+import java.util.*;
 
 public class SignUpScreen extends AppCompatActivity {
 
@@ -29,4 +32,6 @@ public class SignUpScreen extends AppCompatActivity {
         Intent intent = new Intent(this, FoodConfirmation.class);
         startActivity(intent);
     }
+
+
 }

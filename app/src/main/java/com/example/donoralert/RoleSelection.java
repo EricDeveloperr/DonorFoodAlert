@@ -82,7 +82,7 @@ public class RoleSelection extends AppCompatActivity {
     //for those without an account
     protected void signUp () {
         final String useremail = email.getText().toString().trim();
-        final String userpassword = email.getText().toString().trim();
+        final String userpassword = password.getText().toString().trim();
         mAuth.createUserWithEmailAndPassword(useremail, userpassword)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -90,6 +90,7 @@ public class RoleSelection extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     editor.putString("password", userpassword);
                     editor.putString("email", useremail);
+                    editor.commit();
                     //Sign in success, update UI with the signed-in user's information
                     Toast.makeText(RoleSelection.this, "Sign Up Was Successful", Toast.LENGTH_LONG).show();
                     toNextView ();
@@ -101,11 +102,15 @@ public class RoleSelection extends AppCompatActivity {
     }
 
     protected void logIn () {
-        mAuth.signInWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString().trim())
+        final String useremail = email.getText().toString().trim();
+        final String userpassword = password.getText().toString().trim();
+        mAuth.signInWithEmailAndPassword(useremail, userpassword)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            editor.putString("password", userpassword);
+                            editor.putString("email", useremail);
                             Toast.makeText(RoleSelection.this, "Signed In", Toast.LENGTH_LONG).show();
                             toNextView();
                         } else {
