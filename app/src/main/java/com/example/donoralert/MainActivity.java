@@ -18,5 +18,4 @@ public class MainActivity extends AppCompatActivity {
         Map <String, Object> user = new HashMap<>();
     }
 
-    protected void testMethod (){}
 }
