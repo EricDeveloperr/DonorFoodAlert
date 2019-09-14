@@ -2,64 +2,89 @@ package com.example.donoralert;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import com.google.firebase.auth.*;
-import com.google.firebase.firestore.*;
-import com.google.firebase.*;
-import android.widget.*;
-import java.util.*;
+import android.widget.Button;
+import android.widget.Toast;
 
-public class FoodConfirmation extends AppCompatActivity {
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-    EditText foodName;
-    EditText description;
+import java.util.HashMap;
+import java.util.Map;
+import com.google.firebase.auth .*;
+import com.google.firebase.firestore .*;
+import com.google.firebase .*;
+import android.widget .*;
+import java.util .*;
 
-    Button confirm;
+    public class FoodConfirmation extends AppCompatActivity {
 
-    FirebaseAuth mAuth;
-    FirebaseFirestore db;
+        private Button button;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food_confirmation);
+        EditText foodName;
+        EditText description;
 
-        foodName = findViewById(R.id.foodNameInputBox);
-        description = findViewById(R.id.descriptionInputBox);
+        Button confirm;
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth;
+        FirebaseFirestore db;
 
-        confirm = findViewById(R.id.confirmButton);
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadData();
-            }
-        });
+        @Override
 
-        db = FirebaseFirestore.getInstance();
-        Map <String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put ("last", "Lovelace");
-        user.put("born", 1815);
-    }
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_food_confirmation);
 
-    public void uploadData () {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            Toast.makeText(FoodConfirmation.this, "Upload Failed", Toast.LENGTH_LONG).show();
-            return;
+                    button = findViewById(R.id.confirmButton);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openFoodWaitList();
+                }
+            });
         }
-        String id = user.getUid();
-        Map <String, Object> content = new HashMap<>();
-        String name = foodName.getText().toString().trim();
-        String descr = description.getText().toString().trim();
-        content.put("name", name);
-        content.put("description", description);
-        db.collection(id).add(content);
 
-        foodName.setText("");
-        description.setText("");
+        public void openFoodWaitList() {
+            Intent intent = new Intent(this, FoodWaitList.class);
+            startActivity(intent);
+            foodName = findViewById(R.id.foodNameInputBox);
+            description = findViewById(R.id.descriptionInputBox);
+
+            mAuth = FirebaseAuth.getInstance();
+
+            confirm = findViewById(R.id.confirmButton);
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    uploadData();
+                }
+            });
+
+            db = FirebaseFirestore.getInstance();
+            Map<String, Object> user = new HashMap<>();
+            user.put("first", "Ada");
+            user.put("last", "Lovelace");
+            user.put("born", 1815);
+        }
+
+        public void uploadData() {
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user == null) {
+                Toast.makeText(FoodConfirmation.this, "Upload Failed", Toast.LENGTH_LONG).show();
+                return;
+            }
+            String id = user.getUid();
+            Map<String, Object> content = new HashMap<>();
+            String name = foodName.getText().toString().trim();
+            String descr = description.getText().toString().trim();
+            content.put("name", name);
+            content.put("description", description);
+            db.collection(id).add(content);
+
+            foodName.setText("");
+            description.setText("");
+        }
     }
-}
+
