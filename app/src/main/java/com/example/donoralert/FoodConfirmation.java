@@ -9,8 +9,11 @@ import com.google.firebase.firestore.*;
 import com.google.firebase.*;
 import android.widget.*;
 import java.util.*;
+import android.content.*;
 
 public class FoodConfirmation extends AppCompatActivity {
+
+    private Button button;
 
     EditText foodName;
     EditText description;
@@ -35,14 +38,10 @@ public class FoodConfirmation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadData();
+                openFoodWaitList();
             }
         });
-
         db = FirebaseFirestore.getInstance();
-        Map <String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put ("last", "Lovelace");
-        user.put("born", 1815);
     }
 
     public void uploadData () {
@@ -56,10 +55,15 @@ public class FoodConfirmation extends AppCompatActivity {
         String name = foodName.getText().toString().trim();
         String descr = description.getText().toString().trim();
         content.put("name", name);
-        content.put("description", description);
+        content.put("description", descr);
         db.collection(id).add(content);
 
         foodName.setText("");
         description.setText("");
+    }
+
+    public void openFoodWaitList () {
+        Intent intent = new Intent (this, FoodWaitList.class);
+        startActivity(intent);
     }
 }
