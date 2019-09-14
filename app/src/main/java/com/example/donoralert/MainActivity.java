@@ -12,16 +12,58 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.*;
 import com.google.firebase.*;
 import android.util.*;
+import android.view.View;
+import android.widget.*;
+import android.content.*;
 
+//main activity is now the welcome page
 public class MainActivity extends AppCompatActivity {
+
+    Button receiver;
+    Button donor;
+    Intent toLogIn;
+    //persistant storage
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setTitle("Welcome");
+
+        receiver = findViewById(R.id.receiver);
+        donor = findViewById(R.id.donor);
+        //create an intent
+        toLogIn = new Intent(this, RoleSelection.class);
+        preferences = this.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.putBoolean("role", true); //false: receiver, true: donor
+        editor.putString("password", "");
+        editor.putString("email", "");
+        editor.commit();
+
+        receiver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putBoolean("role", false);
+                editor.commit();
+                startActivity (toLogIn);
+            }
+        });
+
+        donor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putBoolean("role", true);
+                editor.commit();
+                startActivity (toLogIn);
+            }
+        });
+
 
         //this is just for testing
-        FirebaseApp.initializeApp(this);
+        /*FirebaseApp.initializeApp(this);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map <String, Object> user = new HashMap<>();
         user.put("first", "Ada");
@@ -38,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 Log.w("2", "Error adding document", e);
             }
-        });
+        });*/
     }
-
 }
