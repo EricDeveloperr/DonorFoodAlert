@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -12,7 +13,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
 import java.util.*;
 import android.content.*;
-
 
 //role activity is now the login page
 public class RoleSelection extends AppCompatActivity {
@@ -69,6 +69,7 @@ public class RoleSelection extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null)
         {
+            toNextView();
             //go to the next page
         }
     }
@@ -106,6 +107,7 @@ public class RoleSelection extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(RoleSelection.this, "Signed In", Toast.LENGTH_LONG).show();
+                            toNextView();
                         } else {
                             Toast.makeText(RoleSelection.this, "Sign In Failed", Toast.LENGTH_LONG).show();
                         }
