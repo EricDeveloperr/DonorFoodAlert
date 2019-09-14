@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".RoleSelection"></activity>
         <activity android:name=".FoodConfirmation" />
+        <activity android:name=".SignUpScreen"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

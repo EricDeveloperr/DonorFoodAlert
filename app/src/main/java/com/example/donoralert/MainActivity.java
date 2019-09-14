@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.*;
 import android.content.*;
 
+import com.google.firebase.auth.*;
+
 //main activity is now the welcome page
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         receiver = findViewById(R.id.receiver);
         donor = findViewById(R.id.donor);
+        mAuth = FirebaseAuth.getInstance();
         //create an intent
         toLogIn = new Intent(this, RoleSelection.class);
         preferences = this.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editor.putBoolean("role", true);
                 editor.commit();
-                startActivity (toLogIn);
+                toNextView();
             }
         });
 
@@ -81,5 +86,20 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("2", "Error adding document", e);
             }
         });*/
+    }
+
+    @Override
+    public void onStart () {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null)
+        {
+            toNextView();
+            //go to the next page
+        }
+    }
+
+    public void toNextView () {
+        startActivity(toLogIn);
     }
 }
