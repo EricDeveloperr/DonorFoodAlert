@@ -22,7 +22,8 @@ public class RoleSelection extends AppCompatActivity {
     EditText email;
     EditText password;
     RoleSelection selfRef;
-    Intent i;
+    Intent toDonor;
+    Intent toReceiver;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -38,7 +39,8 @@ public class RoleSelection extends AppCompatActivity {
         logIn = findViewById(R.id.login);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        i = new Intent(this, SignUpScreen.class);
+        toDonor = new Intent(this, SignUpScreen.class);
+        toReceiver = new Intent (this, MapsActivity.class);
         preferences = this.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         editor = preferences.edit();
 
@@ -76,7 +78,15 @@ public class RoleSelection extends AppCompatActivity {
 
     //goes to the next view
     public void toNextView() {
-        startActivity(i);
+        //false: receiver, true: donor
+
+        if (preferences.getBoolean("role", true))
+        {
+            startActivity(toDonor);
+        }
+        else {
+            startActivity(toReceiver);
+        }
     }
 
     //for those without an account
