@@ -10,6 +10,7 @@ import android.widget.*;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.*;
 import java.util.*;
 import android.content.*;
@@ -20,7 +21,7 @@ public class RoleSelection extends AppCompatActivity {
     Button signUp;
     Button logIn;
     EditText email;
-    EditText password;
+    TextInputEditText password;
     RoleSelection selfRef;
     Intent toDonor;
     Intent toReceiver;
