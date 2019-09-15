@@ -123,6 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void updateUI (ArrayList<Food> arr) {
+        mMap.clear();
         for (Food each: arr) {
             LatLng coord = new LatLng(each.location.getLatitude(), each.location.getLongitude());
             mMap.addMarker(new MarkerOptions().position(coord).title(each.name));
