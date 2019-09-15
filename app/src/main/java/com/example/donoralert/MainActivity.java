@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         toLogIn = new Intent(this, RoleSelection.class);
         preferences = this.getSharedPreferences("com.example.donoralert", Context.MODE_PRIVATE);
         editor = preferences.edit();
-        editor.putBoolean("role", true); //false: receiver, true: donor
         editor.putString("password", "");
         editor.putString("email", "");
         editor.commit();

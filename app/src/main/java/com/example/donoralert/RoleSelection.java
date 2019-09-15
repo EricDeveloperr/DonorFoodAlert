@@ -81,7 +81,7 @@ public class RoleSelection extends AppCompatActivity {
     public void toNextView() {
         //false: receiver, true: donor
 
-        if (preferences.getBoolean("role", true))
+        if (preferences.getBoolean("role", false))
         {
             startActivity(toDonor);
         }

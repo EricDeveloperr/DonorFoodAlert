@@ -53,7 +53,7 @@ public class FoodWaitList extends AppCompatActivity {
                 ArrayList<Food> list = new ArrayList<Food>();
                 for (QueryDocumentSnapshot doc: value) {
                     if (doc.get("name") != null && doc.get("description") != null) {
-                        Food f = new Food (doc.getString("name"), doc.getString("description"), doc.getGeoPoint("location"));
+                        Food f = new Food (doc.getString("name"), doc.getString("description"), doc.getGeoPoint("location"), doc.getString("image"));
                         list.add(f);
                     }
                 }

@@ -114,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 ArrayList<Food> list = new ArrayList<Food>();
                 for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-                    Food f = new Food (doc.getString("name"), doc.getString("description"), doc.getGeoPoint("location"));
+                    Food f = new Food (doc.getString("name"), doc.getString("description"), doc.getGeoPoint("location"), doc.getString("image"));
                     list.add(f);
                 }
                 updateUI(list);

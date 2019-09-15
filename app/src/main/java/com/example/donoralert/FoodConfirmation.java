@@ -7,8 +7,11 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -20,6 +23,8 @@ import com.google.firebase.auth.*;
 import com.google.firebase.firestore.*;
 import com.google.firebase.*;
 import android.widget.*;
+
+import java.io.InputStream;
 import java.util.*;
 import android.content.*;
 import com.google.android.gms.location.*;
@@ -30,10 +35,14 @@ public class FoodConfirmation extends AppCompatActivity {
     private Button button;
     private Location currLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private BitmapFactory.Options options2 = new BitmapFactory.Options();
 
     EditText foodName;
     EditText description;
 
+    ImageView imageView;
+    Button chooseImage;
+    Uri selectedImageUri;
     TextView locationLabel;
 
     Button confirm;
@@ -43,6 +52,8 @@ public class FoodConfirmation extends AppCompatActivity {
 
     LocationManager locationManager;
     LocationListener locationListener;
+    public static final int PICK_IMAGE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +63,18 @@ public class FoodConfirmation extends AppCompatActivity {
         foodName = findViewById(R.id.foodNameInputBox);
         description = findViewById(R.id.descriptionInputBox);
         locationLabel = findViewById(R.id.location);
+        imageView = findViewById(R.id.imageView);
+        chooseImage = findViewById(R.id.chooseImage);
+        chooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            }
+        });
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -96,6 +119,22 @@ public class FoodConfirmation extends AppCompatActivity {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE) {
+            if (data == null)  {return;}
+            selectedImageUri = data.getData();
+            imageView.setImageURI(selectedImageUri);
+            /*String filestring = selectedImageUri.getPath();
+
+            Bitmap thumbnail = BitmapFactory.decodeFile(filestring, options2);
+
+            imageView.setImageBitmap(thumbnail);*/
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case 10:
@@ -111,7 +150,9 @@ public class FoodConfirmation extends AppCompatActivity {
             public void onSuccess(Location location) {
                 if (location != null) {
                     currLocation = location;
-                    locationLabel.setText(currLocation.toString());
+                    String lat = Integer.toString((int)currLocation.getLatitude());
+                    String lng = Integer.toString((int)currLocation.getLongitude());
+                    locationLabel.setText(lat + ", " + lng);
                 }
             }
         });
@@ -131,6 +172,13 @@ public class FoodConfirmation extends AppCompatActivity {
         GeoPoint point = new GeoPoint(currLocation.getLatitude(), currLocation.getLongitude());
         content.put("location", point);
         content.put("description", descr);
+        if (selectedImageUri != null) {
+            content.put("image", selectedImageUri.toString());
+        }
+        else
+        {
+            content.put("image", "");
+        }
         db.collection(id).add(content);
 
         foodName.setText("");
