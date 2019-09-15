@@ -41,7 +41,7 @@ public class RoleSelection extends AppCompatActivity {
         password = findViewById(R.id.password);
         toDonor = new Intent(this, SignUpScreen.class);
         toReceiver = new Intent (this, MapsActivity.class);
-        preferences = this.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        preferences = this.getSharedPreferences("com.example.donoralert", Context.MODE_PRIVATE);
         editor = preferences.edit();
 
         selfRef = this;
