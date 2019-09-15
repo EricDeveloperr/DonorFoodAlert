@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         //this is just for testing
         /*FirebaseApp.initializeApp(this);
         FirebaseFirestore db = FirebaseFirestore.getInstance();

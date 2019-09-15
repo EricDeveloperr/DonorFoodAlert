@@ -121,6 +121,7 @@ public class RoleSelection extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             editor.putString("password", userpassword);
                             editor.putString("email", useremail);
+                            editor.commit();
                             Toast.makeText(RoleSelection.this, "Signed In", Toast.LENGTH_LONG).show();
                             toNextView();
                         } else {
