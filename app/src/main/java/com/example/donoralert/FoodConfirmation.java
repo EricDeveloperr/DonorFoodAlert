@@ -52,6 +52,7 @@ public class FoodConfirmation extends AppCompatActivity {
 
     LocationManager locationManager;
     LocationListener locationListener;
+    FirebaseUser user;
     public static final int PICK_IMAGE = 1;
 
 
@@ -113,6 +114,7 @@ public class FoodConfirmation extends AppCompatActivity {
             //locationConfiguration();
         }
 
+        user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient (this);
         updateLocation();
@@ -159,7 +161,6 @@ public class FoodConfirmation extends AppCompatActivity {
     }
 
     public void uploadData () {
-        FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(FoodConfirmation.this, "Upload Failed", Toast.LENGTH_LONG).show();
             return;
@@ -168,10 +169,24 @@ public class FoodConfirmation extends AppCompatActivity {
         Map <String, Object> content = new HashMap<>();
         String name = foodName.getText().toString().trim();
         String descr = description.getText().toString().trim();
-        content.put("name", name);
-        GeoPoint point = new GeoPoint(currLocation.getLatitude(), currLocation.getLongitude());
-        content.put("location", point);
-        content.put("description", descr);
+        if (name == null) {
+            content.put ("name", "");
+        }
+        else {
+            content.put("name", name);
+        }
+
+        if (currLocation != null) {
+            GeoPoint point = new GeoPoint(currLocation.getLatitude(), currLocation.getLongitude());
+            content.put("location", point);
+        } else {
+            content.put("location", new GeoPoint(0, 0));
+        }
+        if (descr == null) {
+            content.put ("description", "");
+        } else {
+            content.put("description", descr);
+        }
         if (selectedImageUri != null) {
             content.put("image", selectedImageUri.toString());
         }
@@ -179,6 +194,8 @@ public class FoodConfirmation extends AppCompatActivity {
         {
             content.put("image", "");
         }
+
+        System.out.println (db.collection(id));
         db.collection(id).add(content);
 
         foodName.setText("");

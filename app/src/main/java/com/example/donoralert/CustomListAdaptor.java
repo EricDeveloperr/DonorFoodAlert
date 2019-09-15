@@ -25,7 +25,7 @@ public class CustomListAdaptor extends ArrayAdapter<Food> {
         TextView nameLabel = rowView.findViewById(R.id.namelabel);
         TextView desLabel = rowView.findViewById(R.id.descriptionlabel);
 
-        if (foods[position].uri != null && foods [position].uri != "")
+        if (foods[position].uri != null && !foods [position].uri.equals(""))
         {
             Uri temp = Uri.parse(foods [position].uri);
             if (temp != null) {
